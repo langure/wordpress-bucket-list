@@ -46,3 +46,37 @@ wp-config.php
 # Note: If you wish to whitelist themes,
 # uncomment the next line
 #/wp-content/themes
+
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+
+# Logs
+*.log
+npm-debug.log*
+error_log
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build files
+*.min.js
+*.min.css
+!assets/**/*.min.js
+!assets/**/*.min.css

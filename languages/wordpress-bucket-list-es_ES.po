@@ -1,0 +1,230 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPress Bucket List 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Spanish\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/post-type.php
+msgid "Bucket List Items"
+msgstr "Elementos de la Lista de Deseos"
+
+msgid "Bucket List Item"
+msgstr "Elemento de la Lista de Deseos"
+
+msgid "Bucket List"
+msgstr "Lista de Deseos"
+
+msgid "Bucket Item"
+msgstr "Elemento"
+
+msgid "Item Archives"
+msgstr "Archivos de Elementos"
+
+msgid "Item Attributes"
+msgstr "Atributos del Elemento"
+
+msgid "Parent Item:"
+msgstr "Elemento Padre:"
+
+msgid "All Items"
+msgstr "Todos los Elementos"
+
+msgid "Add New Item"
+msgstr "Agregar Nuevo Elemento"
+
+msgid "Add New"
+msgstr "Agregar Nuevo"
+
+msgid "New Item"
+msgstr "Nuevo Elemento"
+
+msgid "Edit Item"
+msgstr "Editar Elemento"
+
+msgid "Update Item"
+msgstr "Actualizar Elemento"
+
+msgid "View Item"
+msgstr "Ver Elemento"
+
+msgid "View Items"
+msgstr "Ver Elementos"
+
+msgid "Search Item"
+msgstr "Buscar Elemento"
+
+msgid "Not found"
+msgstr "No encontrado"
+
+msgid "Not found in Trash"
+msgstr "No encontrado en la Papelera"
+
+msgid "Categories"
+msgstr "Categorías"
+
+msgid "Category"
+msgstr "Categoría"
+
+msgid "All Categories"
+msgstr "Todas las Categorías"
+
+msgid "Parent Category"
+msgstr "Categoría Padre"
+
+msgid "Parent Category:"
+msgstr "Categoría Padre:"
+
+msgid "New Category Name"
+msgstr "Nuevo Nombre de Categoría"
+
+msgid "Add New Category"
+msgstr "Agregar Nueva Categoría"
+
+msgid "Edit Category"
+msgstr "Editar Categoría"
+
+msgid "Update Category"
+msgstr "Actualizar Categoría"
+
+msgid "View Category"
+msgstr "Ver Categoría"
+
+msgid "Separate categories with commas"
+msgstr "Separar categorías con comas"
+
+msgid "Add or remove categories"
+msgstr "Agregar o eliminar categorías"
+
+msgid "Choose from the most used"
+msgstr "Elegir de las más usadas"
+
+msgid "Popular Categories"
+msgstr "Categorías Populares"
+
+msgid "Search Categories"
+msgstr "Buscar Categorías"
+
+#: src/meta-boxes.php
+msgid "Bucket List Details"
+msgstr "Detalles de la Lista de Deseos"
+
+msgid "Description:"
+msgstr "Descripción:"
+
+msgid "Completion Percentage:"
+msgstr "Porcentaje de Completado:"
+
+msgid "Enter a value between 0 and 100"
+msgstr "Ingrese un valor entre 0 y 100"
+
+msgid "Related Post:"
+msgstr "Publicación Relacionada:"
+
+msgid "-- Select a Post --"
+msgstr "-- Seleccionar una Publicación --"
+
+msgid "Link to a related blog post"
+msgstr "Enlace a una publicación de blog relacionada"
+
+msgid "External Resource Link:"
+msgstr "Enlace a Recurso Externo:"
+
+msgid "Enter a full URL with http:// or https://"
+msgstr "Ingrese una URL completa con http:// o https://"
+
+msgid "Are you sure you want to delete this bucket list item?"
+msgstr "¿Está seguro de que desea eliminar este elemento de la lista?"
+
+msgid "Are you sure you want to move the selected items to trash?"
+msgstr "¿Está seguro de que desea mover los elementos seleccionados a la papelera?"
+
+#: src/shortcode.php
+msgid "Achievement Progress"
+msgstr "Progreso de Logros"
+
+msgid "Items Completed"
+msgstr "Elementos Completados"
+
+msgid "Overall Progress"
+msgstr "Progreso General"
+
+msgid "All"
+msgstr "Todos"
+
+msgid "No bucket list items found."
+msgstr "No se encontraron elementos en la lista de deseos."
+
+msgid "Completed!"
+msgstr "¡Completado!"
+
+msgid "Progress"
+msgstr "Progreso"
+
+msgid "Related Post"
+msgstr "Publicación Relacionada"
+
+msgid "Resource"
+msgstr "Recurso"
+
+#: src/settings.php
+msgid "Bucket List Settings"
+msgstr "Configuración de Lista de Deseos"
+
+msgid "Settings"
+msgstr "Configuración"
+
+msgid "General Settings"
+msgstr "Configuración General"
+
+msgid "Configure how the Bucket List plugin displays on the frontend."
+msgstr "Configura cómo se muestra el plugin de Lista de Deseos en el frontend."
+
+msgid "Frontend Language"
+msgstr "Idioma del Frontend"
+
+msgid "Auto (Use WordPress Site Language)"
+msgstr "Automático (Usar idioma del sitio WordPress)"
+
+msgid "English"
+msgstr "Inglés"
+
+msgid "Español (Spanish)"
+msgstr "Español"
+
+msgid "Force a specific language for the frontend bucket list display, regardless of WordPress site language."
+msgstr "Forzar un idioma específico para la visualización de la lista de deseos en el frontend, independientemente del idioma del sitio WordPress."
+
+msgid "Settings Saved"
+msgstr "Configuración Guardada"
+
+msgid "Save Settings"
+msgstr "Guardar Configuración"
+
+msgid "Shortcode Usage"
+msgstr "Uso del Shortcode"
+
+msgid "Use the following shortcode to display your bucket list:"
+msgstr "Usa el siguiente shortcode para mostrar tu lista de deseos:"
+
+msgid "Available Attributes:"
+msgstr "Atributos Disponibles:"
+
+msgid "Filter by category slug (e.g., category=\"travel\")"
+msgstr "Filtrar por slug de categoría (ej., category=\"travel\")"
+
+msgid "Number of columns on desktop (1-4, default: 3)"
+msgstr "Número de columnas en escritorio (1-4, predeterminado: 3)"
+
+msgid "Show category filter buttons (yes/no, default: yes)"
+msgstr "Mostrar botones de filtro de categoría (yes/no, predeterminado: yes)"
+
+msgid "Examples:"
+msgstr "Ejemplos:"
