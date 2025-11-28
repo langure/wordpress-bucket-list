@@ -204,6 +204,13 @@ class WBL_Shortcode
         $related_post = get_post_meta($post_id, '_wbl_related_post_link', true);
         $external_link = get_post_meta($post_id, '_wbl_external_resource_link', true);
 
+        // Get item type and specific data (for cover image only)
+        $item_type = WBL_Category_Meta_Fields::get_item_type($post_id);
+        $item_data = [];
+        if ($item_type) {
+            $item_data = WBL_Category_Meta_Fields::get_category_data($post_id, $item_type);
+        }
+
         $categories = get_the_terms($post_id, 'bucket_category');
         $category_classes = '';
         if ($categories && !is_wp_error($categories)) {
@@ -220,11 +227,14 @@ class WBL_Shortcode
         $circumference = 2 * pi() * $radius;
         $progress_offset = $circumference * (1 - $completion / 100);
 
+        // Get cover image - prioritize item-specific cover, fallback to featured image
+        $cover_image_id = !empty($item_data['cover_image']) ? $item_data['cover_image'] : get_post_thumbnail_id($post_id);
+
     ?>
         <div class="wbl-card <?php echo esc_attr($category_classes . ' ' . $status_class); ?>" data-completion="<?php echo esc_attr($completion); ?>">
-            <?php if (has_post_thumbnail($post_id)) : ?>
+            <?php if ($cover_image_id) : ?>
                 <div class="wbl-card-image">
-                    <?php echo get_the_post_thumbnail($post_id, 'large'); ?>
+                    <?php echo wp_get_attachment_image($cover_image_id, 'large'); ?>
                     <?php if ($completion == 100) : ?>
                         <div class="wbl-badge"><?php echo self::translate('Completed!'); ?></div>
                     <?php endif; ?>
@@ -345,6 +355,13 @@ class WBL_Shortcode
                 'Previous' => 'Anterior',
                 'Next' => 'Siguiente',
                 'Load More' => 'Cargar Más',
+                'By' => 'Por',
+                'Director' => 'Director',
+                'Artist' => 'Artista',
+                'Platform' => 'Plataforma',
+                'Network' => 'Red',
+                'Host' => 'Presentador',
+                'Rating' => 'Calificación',
             ],
         ];
 

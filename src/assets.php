@@ -18,6 +18,15 @@ class WBL_Assets
 
     public static function enqueue_frontend_assets()
     {
+        // Enqueue CSS
+        wp_enqueue_style(
+            'wbl-frontend',
+            WBL_PLUGIN_URL . 'assets/css/frontend.css',
+            [],
+            '1.0.3', // Bump version
+            'all'
+        );
+
         // Only enqueue on pages that have the shortcode
         global $post;
         if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'bucket_list')) {
@@ -28,13 +37,6 @@ class WBL_Assets
 
             $css_version = file_exists($css_file) ? filemtime($css_file) : WBL_VERSION;
             $js_version = file_exists($js_file) ? filemtime($js_file) : WBL_VERSION;
-
-            wp_enqueue_style(
-                'wbl-frontend',
-                WBL_PLUGIN_URL . 'assets/css/frontend.css',
-                [],
-                $css_version
-            );
 
             wp_enqueue_script(
                 'wbl-frontend',

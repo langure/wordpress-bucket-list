@@ -104,19 +104,25 @@ class WBL_Post_Type
 
     private static function add_default_categories()
     {
-        // English categories
+        // Generic categories - users can rename these in any language
         $default_categories = [
-            'Books' => __('Books', 'wordpress-bucket-list'),
-            'Travel' => __('Travel', 'wordpress-bucket-list'),
-            'Skills' => __('Skills', 'wordpress-bucket-list'),
-            'Projects' => __('Projects', 'wordpress-bucket-list'),
-            'Experiences' => __('Experiences', 'wordpress-bucket-list'),
-            'Health & Fitness' => __('Health & Fitness', 'wordpress-bucket-list')
+            ['name' => 'Entertainment', 'slug' => 'entertainment'],
+            ['name' => 'Learning', 'slug' => 'learning'],
+            ['name' => 'Travel', 'slug' => 'travel'],
+            ['name' => 'Health & Fitness', 'slug' => 'health-fitness'],
+            ['name' => 'Personal Development', 'slug' => 'personal-development'],
+            ['name' => 'Experiences', 'slug' => 'experiences'],
+            ['name' => 'Projects', 'slug' => 'projects'],
+            ['name' => 'Achievements', 'slug' => 'achievements'],
         ];
 
-        foreach ($default_categories as $slug => $name) {
-            if (!term_exists($slug, 'bucket_category')) {
-                wp_insert_term($name, 'bucket_category', ['slug' => sanitize_title($slug)]);
+        foreach ($default_categories as $cat) {
+            if (!term_exists($cat['slug'], 'bucket_category')) {
+                wp_insert_term(
+                    $cat['name'],
+                    'bucket_category',
+                    ['slug' => $cat['slug']]
+                );
             }
         }
     }

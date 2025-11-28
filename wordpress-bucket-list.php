@@ -63,6 +63,8 @@ function wbl_init()
     // Initialize components
     WBL_Post_Type::init();
     WBL_Meta_Boxes::init();
+    WBL_Category_Meta_Fields::init();
+    WBL_Post_Meta_Box::init();
     WBL_Shortcode::init();
     WBL_Assets::init();
     WBL_Settings::init();
