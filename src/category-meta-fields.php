@@ -262,15 +262,6 @@ class WBL_Category_Meta_Fields
             return;
         }
 
-        // TEMPORARY DEBUG - Check what we're receiving
-        $debug_data = [];
-        foreach ($_POST as $key => $value) {
-            if (strpos($key, '_wbl_') === 0) {
-                $debug_data[$key] = $value;
-            }
-        }
-        update_post_meta($post_id, '_debug_post_data', print_r($debug_data, true));
-
         // Save item type
         $item_type = '';
         if (isset($_POST['wbl_item_type'])) {

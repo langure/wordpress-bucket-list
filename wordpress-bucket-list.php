@@ -2,13 +2,17 @@
 
 /**
  * Plugin Name: WordPress Bucket List
- * Description: A plugin to manage bucket list items with custom fields, progress tracking, and frontend display
+ * Plugin URI: https://yourwebsite.com/wordpress-bucket-list
+ * Description: A beautiful, Apple-inspired bucket list plugin to track your life goals with category-specific details like books, movies, music, and more.
  * Version: 1.0.0
- * Author: Alex
- * GitHub Plugin URI: langure/wordpress-bucket-list
- * Requires at least: 5.0
- * Requires PHP: 7.2
+ * Author: Your Name
+ * Author URI: https://yourwebsite.com
+ * License: GPL v2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: wordpress-bucket-list
+ * Domain Path: /languages
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
  */
 
 if (!defined('ABSPATH')) {
