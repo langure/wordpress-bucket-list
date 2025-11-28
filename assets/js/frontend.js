@@ -65,6 +65,32 @@
 			}
 		});
 
+		// Load More functionality (optional - if you want to use it instead of pagination)
+		$('.wbl-load-more').on('click', function () {
+			const $btn = $(this);
+			const currentPage = parseInt($btn.data('page'));
+			const maxPages = parseInt($btn.data('max-pages'));
+			const nextPage = currentPage + 1;
+
+			if (nextPage > maxPages) {
+				return;
+			}
+
+			$btn.addClass('wbl-loading').prop('disabled', true);
+
+			// AJAX call would go here
+			// For now, this is a placeholder for future AJAX implementation
+
+			setTimeout(function () {
+				$btn.removeClass('wbl-loading').prop('disabled', false);
+				$btn.data('page', nextPage);
+
+				if (nextPage >= maxPages) {
+					$btn.text('No More Items').prop('disabled', true);
+				}
+			}, 1000);
+		});
+
 		// Animate progress bars on scroll
 		const animateProgressBars = function () {
 			$('.wbl-progress-fill').each(function () {
@@ -92,42 +118,22 @@
 		$(window).on('scroll', animateProgressBars);
 		animateProgressBars();
 
-		// Smooth scroll for links
-		$('.wbl-link').on('click', function (e) {
-			const href = $(this).attr('href');
-			if (href && href.indexOf('#') === 0) {
-				e.preventDefault();
-				$('html, body').animate(
-					{
-						scrollTop: $(href).offset().top - 100,
-					},
-					500
-				);
-			}
+		// Smooth scroll for pagination
+		$('.wbl-pagination a').on('click', function () {
+			$('html, body').animate(
+				{
+					scrollTop: $('.wbl-container').offset().top - 100,
+				},
+				500
+			);
 		});
 
 		// Keyboard navigation for filter buttons
 		$('.wbl-filter-btn').on('keypress', function (e) {
 			if (e.which === 13 || e.which === 32) {
-				// Enter or Space
 				e.preventDefault();
 				$(this).click();
 			}
 		});
-
-		// Add loading state class
-		const addLoadingState = function ($element) {
-			$element.addClass('wbl-loading');
-		};
-
-		const removeLoadingState = function ($element) {
-			$element.removeClass('wbl-loading');
-		};
-
-		// Expose functions for potential AJAX operations
-		window.wblFrontend = {
-			addLoadingState: addLoadingState,
-			removeLoadingState: removeLoadingState,
-		};
 	});
 })(jQuery);

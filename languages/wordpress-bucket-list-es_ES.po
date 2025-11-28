@@ -228,3 +228,21 @@ msgstr "Mostrar botones de filtro de categoría (yes/no, predeterminado: yes)"
 
 msgid "Examples:"
 msgstr "Ejemplos:"
+
+msgid "Default Columns"
+msgstr "Columnas por Defecto"
+
+msgid "Items Per Page"
+msgstr "Elementos por Página"
+
+msgid "Column"
+msgstr "Columna"
+
+msgid "Columns"
+msgstr "Columnas"
+
+msgid "Default number of columns for the grid layout on desktop. Can be overridden with shortcode attribute."
+msgstr "Número predeterminado de columnas para el diseño de cuadrícula en escritorio. Puede ser anulado con el atributo del shortcode."
+
+msgid "Default number of items to display per page (1-100). Can be overridden with shortcode attribute."
+msgstr "Número predeterminado de elementos a mostrar por página (1-100). Puede ser anulado con el atributo del shortcode."

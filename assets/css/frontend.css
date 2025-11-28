@@ -596,6 +596,122 @@
 	}
 }
 
+/* Pagination */
+.wbl-pagination {
+	margin-top: 40px;
+	text-align: center;
+}
+
+.wbl-pagination ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: inline-flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.wbl-pagination li {
+	display: inline-block;
+}
+
+.wbl-pagination a,
+.wbl-pagination span {
+	display: block;
+	padding: 10px 16px;
+	background: #f5f5f7;
+	color: #1d1d1f;
+	text-decoration: none;
+	border-radius: 8px;
+	font-size: 14px;
+	font-weight: 500;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	min-width: 44px;
+	text-align: center;
+}
+
+.wbl-pagination a:hover {
+	background: #000000;
+	color: #ffffff;
+	transform: translateY(-2px);
+}
+
+.wbl-pagination .current {
+	background: #000000;
+	color: #ffffff;
+}
+
+.wbl-pagination .dots {
+	background: transparent;
+	cursor: default;
+}
+
+/* Load More Button */
+.wbl-load-more-container {
+	text-align: center;
+	margin-top: 40px;
+}
+
+.wbl-load-more {
+	padding: 16px 40px;
+	background: #000000;
+	color: #ffffff;
+	border: none;
+	border-radius: 980px;
+	font-size: 15px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	letter-spacing: 0.3px;
+}
+
+.wbl-load-more:hover {
+	background: #1d1d1f;
+	transform: scale(1.05);
+}
+
+.wbl-load-more:active {
+	transform: scale(0.98);
+}
+
+.wbl-load-more:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.wbl-load-more.wbl-loading::after {
+	content: '';
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	margin-left: 10px;
+	border: 2px solid #ffffff;
+	border-top: 2px solid transparent;
+	border-radius: 50%;
+	animation: wbl-spin 0.6s linear infinite;
+	vertical-align: middle;
+}
+
+/* Mobile Pagination */
+@media (max-width: 768px) {
+	.wbl-pagination {
+		margin-top: 30px;
+	}
+
+	.wbl-pagination a,
+	.wbl-pagination span {
+		padding: 8px 12px;
+		font-size: 13px;
+		min-width: 40px;
+	}
+
+	.wbl-load-more {
+		width: calc(100% - 32px);
+		margin: 0 16px;
+	}
+}
+
 /* Mobile Styles - Spotify-like List View */
 @media (max-width: 768px) {
 	.wbl-container {
@@ -670,7 +786,7 @@
 		height: 60px;
 		min-width: 60px;
 		border-radius: 8px;
-		overflow: hidden;
+		overflow: visible;
 		margin-right: 14px;
 	}
 
@@ -682,6 +798,7 @@
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
+		border-radius: 8px;
 	}
 
 	.wbl-card:hover .wbl-card-image img {
@@ -689,11 +806,14 @@
 	}
 
 	.wbl-badge {
-		top: 4px;
-		right: 4px;
-		padding: 3px 8px;
-		font-size: 9px;
-		border-radius: 6px;
+		position: absolute;
+		top: -6px;
+		right: -6px;
+		padding: 4px 8px;
+		font-size: 8px;
+		border-radius: 8px;
+		white-space: nowrap;
+		z-index: 10;
 	}
 
 	.wbl-card-content {
@@ -703,6 +823,10 @@
 		min-width: 0;
 		color: #1d1d1f;
 		justify-content: center;
+	}
+
+	.wbl-card:hover .wbl-card-content {
+		opacity: 1;
 	}
 
 	.wbl-card-title {
@@ -731,6 +855,13 @@
 
 	.wbl-progress-bar-container {
 		margin-bottom: 0;
+		opacity: 1;
+		transform: none;
+	}
+
+	.wbl-card:hover .wbl-progress-bar-container {
+		opacity: 1;
+		transform: none;
 	}
 
 	.wbl-progress-label {
@@ -742,11 +873,23 @@
 	.wbl-progress-bar {
 		height: 3px;
 		background: #e5e5e7;
+		width: 100%;
 	}
 
 	.wbl-progress-fill {
 		background: #000000;
 		box-shadow: none;
+		width: 100% !important;
+		max-width: 100%;
+	}
+
+	.wbl-completed .wbl-progress-fill {
+		background: #4caf50;
+	}
+
+	/* Hide circular progress on mobile */
+	.wbl-progress-circle-center {
+		display: none;
 	}
 
 	.wbl-card-links {
@@ -759,6 +902,11 @@
 		flex-shrink: 0;
 		opacity: 1;
 		transform: none;
+		animation: none;
+	}
+
+	.wbl-card:hover .wbl-card-links {
+		animation: none;
 	}
 
 	.wbl-link {
@@ -774,11 +922,26 @@
 		justify-content: center;
 		transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 		border: none;
+		animation: none;
+		overflow: visible;
+	}
+
+	.wbl-link::before {
+		display: none;
+	}
+
+	.wbl-completed .wbl-link {
+		background: #4caf50;
 	}
 
 	.wbl-link:hover {
 		background: #1d1d1f;
 		transform: scale(1.05);
+		box-shadow: none;
+	}
+
+	.wbl-completed .wbl-link:hover {
+		background: #45a049;
 	}
 
 	.wbl-link:active {
@@ -790,6 +953,7 @@
 		width: 18px;
 		height: 18px;
 		margin: 0;
+		animation: none !important;
 	}
 
 	.wbl-link-text {

@@ -38,6 +38,18 @@ class WBL_Settings
             'default' => 'auto',
         ]);
 
+        register_setting('wbl_settings_group', 'wbl_default_columns', [
+            'type' => 'integer',
+            'sanitize_callback' => [__CLASS__, 'sanitize_columns'],
+            'default' => 3,
+        ]);
+
+        register_setting('wbl_settings_group', 'wbl_default_per_page', [
+            'type' => 'integer',
+            'sanitize_callback' => [__CLASS__, 'sanitize_per_page'],
+            'default' => 12,
+        ]);
+
         add_settings_section(
             'wbl_general_section',
             __('General Settings', 'wordpress-bucket-list'),
@@ -52,12 +64,40 @@ class WBL_Settings
             'wbl-settings',
             'wbl_general_section'
         );
+
+        add_settings_field(
+            'wbl_default_columns',
+            __('Default Columns', 'wordpress-bucket-list'),
+            [__CLASS__, 'columns_field_callback'],
+            'wbl-settings',
+            'wbl_general_section'
+        );
+
+        add_settings_field(
+            'wbl_default_per_page',
+            __('Items Per Page', 'wordpress-bucket-list'),
+            [__CLASS__, 'per_page_field_callback'],
+            'wbl-settings',
+            'wbl_general_section'
+        );
     }
 
     public static function sanitize_language($value)
     {
         $allowed = ['auto', 'en', 'es'];
         return in_array($value, $allowed) ? $value : 'auto';
+    }
+
+    public static function sanitize_columns($value)
+    {
+        $value = intval($value);
+        return ($value >= 1 && $value <= 4) ? $value : 3;
+    }
+
+    public static function sanitize_per_page($value)
+    {
+        $value = intval($value);
+        return ($value >= 1 && $value <= 100) ? $value : 12;
     }
 
     public static function general_section_callback()
@@ -82,6 +122,41 @@ class WBL_Settings
         </select>
         <p class="description">
             <?php _e('Force a specific language for the frontend bucket list display, regardless of WordPress site language.', 'wordpress-bucket-list'); ?>
+        </p>
+    <?php
+    }
+
+    public static function columns_field_callback()
+    {
+        $value = get_option('wbl_default_columns', 3);
+    ?>
+        <select name="wbl_default_columns" id="wbl_default_columns">
+            <option value="1" <?php selected($value, 1); ?>>1 <?php _e('Column', 'wordpress-bucket-list'); ?></option>
+            <option value="2" <?php selected($value, 2); ?>>2 <?php _e('Columns', 'wordpress-bucket-list'); ?></option>
+            <option value="3" <?php selected($value, 3); ?>>3 <?php _e('Columns', 'wordpress-bucket-list'); ?></option>
+            <option value="4" <?php selected($value, 4); ?>>4 <?php _e('Columns', 'wordpress-bucket-list'); ?></option>
+        </select>
+        <p class="description">
+            <?php _e('Default number of columns for the grid layout on desktop. Can be overridden with shortcode attribute.', 'wordpress-bucket-list'); ?>
+        </p>
+    <?php
+    }
+
+    public static function per_page_field_callback()
+    {
+        $value = get_option('wbl_default_per_page', 12);
+    ?>
+        <input
+            type="number"
+            name="wbl_default_per_page"
+            id="wbl_default_per_page"
+            value="<?php echo esc_attr($value); ?>"
+            min="1"
+            max="100"
+            step="1"
+            style="width: 100px;" />
+        <p class="description">
+            <?php _e('Default number of items to display per page (1-100). Can be overridden with shortcode attribute.', 'wordpress-bucket-list'); ?>
         </p>
     <?php
     }
@@ -189,5 +264,21 @@ class WBL_Settings
         }
 
         return $setting;
+    }
+
+    /**
+     * Get the default columns setting
+     */
+    public static function get_default_columns()
+    {
+        return intval(get_option('wbl_default_columns', 3));
+    }
+
+    /**
+     * Get the default per page setting
+     */
+    public static function get_default_per_page()
+    {
+        return intval(get_option('wbl_default_per_page', 12));
     }
 }

@@ -25,16 +25,22 @@ class WBL_Shortcode
 
         $atts = shortcode_atts([
             'category' => '',
-            'columns' => 3,
+            'columns' => WBL_Settings::get_default_columns(),
             'show_filter' => 'yes',
+            'per_page' => WBL_Settings::get_default_per_page(),
+            'pagination' => 'yes',
         ], $atts, 'bucket_list');
 
         ob_start();
 
-        // Get all bucket items
+        // Get current page
+        $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
+        // Get all bucket items with pagination
         $args = [
             'post_type' => 'bucket_item',
-            'posts_per_page' => -1,
+            'posts_per_page' => intval($atts['per_page']),
+            'paged' => $paged,
             'post_status' => 'publish',
             'orderby' => 'date',
             'order' => 'DESC',
@@ -52,14 +58,17 @@ class WBL_Shortcode
 
         $query = new WP_Query($args);
 
-        // Calculate statistics
-        $total_items = $query->post_count;
+        // Calculate statistics (need all items for accurate stats)
+        $stats_args = array_merge($args, ['posts_per_page' => -1, 'paged' => 1]);
+        $stats_query = new WP_Query($stats_args);
+
+        $total_items = $stats_query->post_count;
         $completed_items = 0;
         $total_completion = 0;
 
-        if ($query->have_posts()) {
-            while ($query->have_posts()) {
-                $query->the_post();
+        if ($stats_query->have_posts()) {
+            while ($stats_query->have_posts()) {
+                $stats_query->the_post();
                 $completion = get_post_meta(get_the_ID(), '_wbl_completion_percentage', true);
                 $completion = $completion ? intval($completion) : 0;
 
@@ -74,7 +83,7 @@ class WBL_Shortcode
         $average_completion = $total_items > 0 ? round($total_completion / $total_items) : 0;
 
 ?>
-        <div class="wbl-container" data-columns="<?php echo esc_attr($atts['columns']); ?>">
+        <div class="wbl-container" data-columns="<?php echo esc_attr($atts['columns']); ?>" data-per-page="<?php echo esc_attr($atts['per_page']); ?>">
 
             <!-- Statistics Section -->
             <div class="wbl-stats">
@@ -143,6 +152,33 @@ class WBL_Shortcode
                 }
                 ?>
             </div>
+
+            <?php if ($atts['pagination'] === 'yes' && $query->max_num_pages > 1) : ?>
+                <!-- Pagination -->
+                <div class="wbl-pagination">
+                    <?php
+                    echo paginate_links([
+                        'total' => $query->max_num_pages,
+                        'current' => $paged,
+                        'prev_text' => '← ' . self::translate('Previous'),
+                        'next_text' => self::translate('Next') . ' →',
+                        'type' => 'list',
+                        'mid_size' => 2,
+                    ]);
+                    ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if ($atts['pagination'] === 'yes') : ?>
+                <!-- Load More Button (Alternative to pagination) -->
+                <div class="wbl-load-more-container" style="display: none;">
+                    <?php if ($query->max_num_pages > 1) : ?>
+                        <button class="wbl-load-more" data-page="1" data-max-pages="<?php echo esc_attr($query->max_num_pages); ?>">
+                            <?php echo self::translate('Load More'); ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
         </div>
     <?php
 
@@ -159,6 +195,12 @@ class WBL_Shortcode
         $description = get_post_meta($post_id, '_wbl_description', true);
         $completion = get_post_meta($post_id, '_wbl_completion_percentage', true);
         $completion = $completion ? intval($completion) : 0;
+
+        // Ensure completion is exactly 100 for completed items
+        if ($completion >= 100) {
+            $completion = 100;
+        }
+
         $related_post = get_post_meta($post_id, '_wbl_related_post_link', true);
         $external_link = get_post_meta($post_id, '_wbl_external_resource_link', true);
 
@@ -206,7 +248,7 @@ class WBL_Shortcode
                         <span><?php echo esc_html($completion); ?>%</span>
                     </div>
                     <div class="wbl-progress-bar">
-                        <div class="wbl-progress-fill" style="width: <?php echo esc_attr($completion); ?>%"></div>
+                        <div class="wbl-progress-fill" style="width: <?php echo esc_attr($completion); ?>%;"></div>
                     </div>
                 </div>
             </div>
@@ -300,6 +342,9 @@ class WBL_Shortcode
                 'Progress' => 'Progreso',
                 'Read More' => 'Leer Más',
                 'Check it Out' => 'Chécalo',
+                'Previous' => 'Anterior',
+                'Next' => 'Siguiente',
+                'Load More' => 'Cargar Más',
             ],
         ];
 
