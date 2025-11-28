@@ -201,6 +201,128 @@ class WBL_Post_Meta_Box
     <?php
     }
 
+    /**
+     * Translate general text
+     */
+    private static function translate($text, $lang)
+    {
+        if ($lang === 'auto') {
+            return $text;
+        }
+
+        $translations = [
+            'es' => [
+                'Technical Details' => 'Ficha Técnica',
+            ],
+        ];
+
+        if ($lang === 'es' && isset($translations['es'][$text])) {
+            return $translations['es'][$text];
+        }
+
+        return $text;
+    }
+
+    /**
+     * Translate field labels
+     */
+    private static function translate_field_label($label, $lang)
+    {
+        if ($lang === 'auto') {
+            return $label;
+        }
+
+        $translations = [
+            'es' => [
+                // Book fields
+                'Book Cover' => 'Portada del Libro',
+                'Author' => 'Autor',
+                'ISBN' => 'ISBN',
+                'Number of Pages' => 'Número de Páginas',
+                'Publisher' => 'Editorial',
+                'Publication Year' => 'Año de Publicación',
+                'Genre' => 'Género',
+                'Your Rating (1-10)' => 'Mi Calificación',
+                'Started Reading' => 'Inicio de Lectura',
+                'Finished Reading' => 'Fin de Lectura',
+                'Favorite Quote' => 'Cita Favorita',
+
+                // Movie fields
+                'Movie Poster' => 'Póster de la Película',
+                'Director' => 'Director',
+                'Main Cast (comma separated)' => 'Reparto Principal',
+                'Release Year' => 'Año de Estreno',
+                'Runtime (minutes)' => 'Duración (minutos)',
+                'IMDb Rating' => 'Calificación IMDb',
+                'Date Watched' => 'Fecha de Visualización',
+                'Studio' => 'Estudio',
+
+                // Music Album fields
+                'Album Cover' => 'Portada del Álbum',
+                'Artist/Band' => 'Artista/Banda',
+                'Record Label' => 'Sello Discográfico',
+                'Track List (one per line)' => 'Lista de Canciones',
+                'Favorite Track' => 'Canción Favorita',
+                'Date Listened' => 'Fecha de Escucha',
+
+                // TV Series fields
+                'Series Poster' => 'Póster de la Serie',
+                'Creator(s)' => 'Creador(es)',
+                'Total Seasons' => 'Temporadas Totales',
+                'Total Episodes' => 'Episodios Totales',
+                'Current Season Watching' => 'Temporada Actual',
+                'Current Episode' => 'Episodio Actual',
+                'Network/Platform' => 'Cadena/Plataforma',
+                'Started Watching' => 'Inicio de Visualización',
+
+                // Video Game fields
+                'Game Cover' => 'Portada del Juego',
+                'Developer' => 'Desarrollador',
+                'Platform(s)' => 'Plataforma(s)',
+                'Hours Played' => 'Horas Jugadas',
+                'Difficulty Level' => 'Nivel de Dificultad',
+                'Started Playing' => 'Inicio de Juego',
+                'Completed' => 'Completado',
+
+                // Podcast fields
+                'Podcast Cover Art' => 'Arte del Podcast',
+                'Host(s)' => 'Presentador(es)',
+                'Total Episodes' => 'Episodios Totales',
+                'Episodes Listened' => 'Episodios Escuchados',
+                'Genre/Category' => 'Género/Categoría',
+                'Favorite Episode' => 'Episodio Favorito',
+                'Started Listening' => 'Inicio de Escucha',
+
+                // Workout fields
+                'Workout Image' => 'Imagen del Entrenamiento',
+                'Workout Type' => 'Tipo de Entrenamiento',
+                'Duration (minutes)' => 'Duración (minutos)',
+                'Frequency (times per week)' => 'Frecuencia (veces por semana)',
+                'Goal' => 'Objetivo',
+                'Trainer/Program' => 'Entrenador/Programa',
+                'Location (Gym, Home, etc.)' => 'Ubicación (Gimnasio, Casa, etc.)',
+                'Started' => 'Inicio',
+                'Target Completion' => 'Finalización Objetivo',
+            ],
+        ];
+
+        if ($lang === 'es' && isset($translations['es'][$label])) {
+            return $translations['es'][$label];
+        }
+
+        return $label;
+    }
+
+    /**
+     * Format rating value with stars
+     */
+    private static function format_rating($value)
+    {
+        $rating = floatval($value);
+        $stars = str_repeat('⭐', intval($rating));
+        return $stars . ' ' . $rating . '/10';
+    }
+
     public static function append_bucket_details($content)
     {
         // Only on single posts
@@ -235,8 +357,14 @@ class WBL_Post_Meta_Box
             return $content;
         }
 
+        // Get language setting
+        $forced_lang = WBL_Settings::get_frontend_language();
+
         // Get bucket item title
         $item_title = get_the_title($bucket_item_id);
+
+        // Translate "Technical Details" title
+        $tech_details_title = self::translate('Technical Details', $forced_lang);
 
         // Build the technical details HTML
         ob_start();
@@ -255,6 +383,9 @@ class WBL_Post_Meta_Box
             ?>
 
             <div class="wbl-details-content">
+                <div style="margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 1px;">
+                    <?php echo esc_html($tech_details_title); ?>
+                </div>
                 <h3><?php echo esc_html($item_title); ?></h3>
 
                 <div class="wbl-details-grid">
@@ -265,14 +396,22 @@ class WBL_Post_Meta_Box
                             $field_info = isset($field_config['fields'][$field_key]) ? $field_config['fields'][$field_key] : null;
                             if (!$field_info) continue;
 
+                            // Translate field label
+                            $translated_label = self::translate_field_label($field_info['label'], $forced_lang);
+
                             // Full width for textarea fields
                             $is_full = ($field_info['type'] === 'textarea');
+
+                            // Check if this is a rating field
+                            $is_rating = (stripos($field_key, 'rating') !== false);
                     ?>
                             <div class="wbl-detail-item <?php echo $is_full ? 'wbl-detail-full' : ''; ?>">
-                                <span class="wbl-detail-label"><?php echo esc_html($field_info['label']); ?></span>
+                                <span class="wbl-detail-label"><?php echo esc_html($translated_label); ?></span>
                                 <div class="wbl-detail-value">
                                     <?php
-                                    if ($field_info['type'] === 'textarea') {
+                                    if ($is_rating) {
+                                        echo self::format_rating($value);
+                                    } elseif ($field_info['type'] === 'textarea') {
                                         echo nl2br(esc_html($value));
                                     } elseif ($field_info['type'] === 'date' && !empty($value)) {
                                         echo esc_html(date_i18n(get_option('date_format'), strtotime($value)));
