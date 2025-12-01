@@ -40,9 +40,21 @@ class WBL_Meta_Boxes
         $completion = get_post_meta($post->ID, '_wbl_completion_percentage', true);
         $related_post = get_post_meta($post->ID, '_wbl_related_post_link', true);
         $external_link = get_post_meta($post->ID, '_wbl_external_resource_link', true);
+        $target_date = get_post_meta($post->ID, '_wbl_target_date', true);
 
 ?>
         <div class="wbl-meta-box-wrapper">
+            <p>
+                <label for="wbl_target_date"><strong><?php _e('Target Date:', 'wordpress-bucket-list'); ?></strong></label><br>
+                <input
+                    type="date"
+                    id="wbl_target_date"
+                    name="wbl_target_date"
+                    value="<?php echo esc_attr($target_date); ?>"
+                    class="regular-text" />
+                <span class="description"><?php _e('Set a target date to complete this goal', 'wordpress-bucket-list'); ?></span>
+            </p>
+
             <p>
                 <label for="wbl_description"><strong><?php _e('Description:', 'wordpress-bucket-list'); ?></strong></label><br>
                 <textarea
@@ -134,6 +146,11 @@ class WBL_Meta_Boxes
 
         if (!current_user_can('edit_post', $post_id)) {
             return;
+        }
+
+        // Save target date
+        if (isset($_POST['wbl_target_date'])) {
+            update_post_meta($post_id, '_wbl_target_date', sanitize_text_field($_POST['wbl_target_date']));
         }
 
         // Save description

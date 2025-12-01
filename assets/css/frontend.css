@@ -1236,3 +1236,95 @@
 		background-color: #2d2d2f;
 	}
 }
+
+/* Target Date Display */
+.wbl-target-date {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin: 10px 0 12px 0;
+	font-size: 13px;
+	color: rgba(255, 255, 255, 0.9);
+}
+
+.wbl-target-date .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.wbl-overdue-text {
+	color: #ff6b6b;
+	font-weight: 600;
+}
+
+.wbl-target-text {
+	color: #4ecdc4;
+	font-weight: 600;
+}
+
+.wbl-date-label {
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 12px;
+	margin-left: 4px;
+}
+
+/* Badge Variants */
+.wbl-badge-completed {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.wbl-badge-overdue {
+	background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+	animation: pulse 2s ease-in-out infinite;
+}
+
+.wbl-badge-urgent {
+	background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+@keyframes pulse {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.8;
+	}
+}
+
+/* Overdue Card Styling */
+.wbl-card.wbl-overdue {
+	border: 2px solid rgba(255, 107, 107, 0.3);
+}
+
+.wbl-card.wbl-overdue .wbl-card-image::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(255, 107, 107, 0.1);
+	pointer-events: none;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+	.wbl-target-date {
+		background: rgba(0, 0, 0, 0.5);
+		padding: 6px 10px;
+		border-radius: 6px;
+		margin: 8px 0;
+	}
+
+	.wbl-overdue-text,
+	.wbl-target-text,
+	.wbl-date-label {
+		color: #fff;
+	}
+
+	.wbl-overdue-text {
+		opacity: 0.9;
+	}
+}

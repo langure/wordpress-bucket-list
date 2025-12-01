@@ -203,6 +203,10 @@ class WBL_Shortcode
 
         $related_post = get_post_meta($post_id, '_wbl_related_post_link', true);
         $external_link = get_post_meta($post_id, '_wbl_external_resource_link', true);
+        $target_date = get_post_meta($post_id, '_wbl_target_date', true);
+
+        // Calculate days until/since target date
+        $days_info = self::calculate_days_remaining($target_date);
 
         // Get item type and specific data (for cover image only)
         $item_type = WBL_Category_Meta_Fields::get_item_type($post_id);
@@ -221,6 +225,9 @@ class WBL_Shortcode
         }
 
         $status_class = $completion == 100 ? 'wbl-completed' : '';
+        if ($days_info && $days_info['is_overdue'] && $completion < 100) {
+            $status_class .= ' wbl-overdue';
+        }
 
         // Calculate circle progress
         $radius = 60;
@@ -236,7 +243,11 @@ class WBL_Shortcode
                 <div class="wbl-card-image">
                     <?php echo wp_get_attachment_image($cover_image_id, 'large'); ?>
                     <?php if ($completion == 100) : ?>
-                        <div class="wbl-badge"><?php echo self::translate('Completed!'); ?></div>
+                        <div class="wbl-badge wbl-badge-completed"><?php echo self::translate('Completed!'); ?></div>
+                    <?php elseif ($days_info && $days_info['is_overdue']) : ?>
+                        <div class="wbl-badge wbl-badge-overdue"><?php echo self::translate('Overdue'); ?></div>
+                    <?php elseif ($days_info && $days_info['days'] <= 7 && $days_info['days'] > 0) : ?>
+                        <div class="wbl-badge wbl-badge-urgent"><?php echo sprintf(self::translate('%d days left'), $days_info['days']); ?></div>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -251,6 +262,22 @@ class WBL_Shortcode
                 <?php endif; ?>
 
                 <h3 class="wbl-card-title"><?php echo esc_html(get_the_title($post_id)); ?></h3>
+
+                <?php if ($days_info && $completion < 100) : ?>
+                    <div class="wbl-target-date">
+                        <span class="dashicons dashicons-calendar-alt"></span>
+                        <?php if ($days_info['is_overdue']) : ?>
+                            <span class="wbl-overdue-text">
+                                <?php echo sprintf(self::translate('Overdue by %d days'), abs($days_info['days'])); ?>
+                            </span>
+                        <?php else : ?>
+                            <span class="wbl-target-text">
+                                <?php echo sprintf(self::translate('%d days remaining'), $days_info['days']); ?>
+                            </span>
+                        <?php endif; ?>
+                        <span class="wbl-date-label">(<?php echo esc_html(date_i18n(get_option('date_format'), strtotime($target_date))); ?>)</span>
+                    </div>
+                <?php endif; ?>
 
                 <div class="wbl-progress-bar-container">
                     <div class="wbl-progress-label">
@@ -303,6 +330,26 @@ class WBL_Shortcode
             <?php endif; ?>
         </div>
 <?php
+    }
+
+    /**
+     * Calculate days remaining until target date
+     */
+    private static function calculate_days_remaining($target_date)
+    {
+        if (empty($target_date)) {
+            return null;
+        }
+
+        $target = strtotime($target_date);
+        $today = strtotime('today');
+        $diff = $target - $today;
+        $days = floor($diff / (60 * 60 * 24));
+
+        return [
+            'days' => abs($days),
+            'is_overdue' => $days < 0,
+        ];
     }
 
     /**
@@ -362,6 +409,10 @@ class WBL_Shortcode
                 'Network' => 'Red',
                 'Host' => 'Presentador',
                 'Rating' => 'Calificación',
+                'Overdue' => 'Atrasado',
+                '%d days left' => '%d días restantes',
+                'Overdue by %d days' => 'Atrasado %d días',
+                '%d days remaining' => '%d días restantes',
             ],
         ];
 
