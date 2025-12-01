@@ -47,24 +47,32 @@ class WBL_Post_Meta_Box
         ]);
 
 ?>
-        <div class="components-base-control">
-            <div class="components-base-control__field">
-                <label class="components-base-control__label" for="wbl_linked_bucket_item" style="display: block; margin-bottom: 8px;">
-                    <?php _e('Select Item:', 'wordpress-bucket-list'); ?>
-                </label>
-                <select name="wbl_linked_bucket_item" id="wbl_linked_bucket_item" class="components-select-control__input" style="width: 100%;">
-                    <option value=""><?php _e('-- None --', 'wordpress-bucket-list'); ?></option>
-                    <?php foreach ($bucket_items as $item) : ?>
-                        <option value="<?php echo esc_attr($item->ID); ?>" <?php selected($selected_item, $item->ID); ?>>
-                            <?php echo esc_html($item->post_title); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-                <p class="description" style="margin: 8px 0 0 0;">
-                    <?php _e('Technical details will appear at the end of this post.', 'wordpress-bucket-list'); ?>
-                </p>
-            </div>
+        <div class="wbl-sidebar-metabox-wrapper">
+            <label for="wbl_linked_bucket_item" style="display: block; margin-bottom: 8px; font-weight: 600;">
+                <?php _e('Select Item:', 'wordpress-bucket-list'); ?>
+            </label>
+            <select name="wbl_linked_bucket_item" id="wbl_linked_bucket_item" style="width: 100%;">
+                <option value=""><?php _e('-- None --', 'wordpress-bucket-list'); ?></option>
+                <?php foreach ($bucket_items as $item) : ?>
+                    <option value="<?php echo esc_attr($item->ID); ?>" <?php selected($selected_item, $item->ID); ?>>
+                        <?php echo esc_html($item->post_title); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+            <p class="description" style="margin: 8px 0 0 0;">
+                <?php _e('Technical details will appear at the end of this post.', 'wordpress-bucket-list'); ?>
+            </p>
         </div>
+        <style>
+            .wbl-sidebar-metabox-wrapper {
+                padding-right: 12px;
+                box-sizing: border-box;
+            }
+
+            .wbl-sidebar-metabox-wrapper select {
+                box-sizing: border-box;
+            }
+        </style>
     <?php
     }
 
