@@ -1,8 +1,8 @@
 === WordPress Bucket List ===
-Contributors: yourusername
+Contributors: Alejandro De León Languré
 Tags: bucket list, goals, achievements, progress tracker, personal goals
 Requires at least: 5.8
-Tested up to: 6.4
+Tested up to: 6.8.3
 Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
