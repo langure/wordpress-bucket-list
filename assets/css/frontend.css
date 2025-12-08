@@ -989,69 +989,6 @@
 	outline-offset: 2px;
 }
 
-/* Dark Mode Support (Optional) */
-@media (prefers-color-scheme: dark) {
-	.wbl-container {
-		background: #000000;
-	}
-
-	.wbl-stats {
-		background: #1d1d1f;
-	}
-
-	.wbl-card {
-		background: #1d1d1f;
-		border-color: #2d2d2f;
-	}
-
-	.wbl-card-title {
-		color: #f5f5f7;
-	}
-
-	.wbl-card-description,
-	.wbl-progress-label {
-		color: #a1a1a6;
-	}
-
-	.wbl-category-badge {
-		background: #2d2d2f;
-		color: #a1a1a6;
-	}
-
-	.wbl-progress-bar {
-		background: #2d2d2f;
-	}
-
-	.wbl-progress-fill {
-		background: #ffffff;
-	}
-
-	.wbl-filter-btn {
-		background: #2d2d2f;
-		color: #f5f5f7;
-	}
-
-	.wbl-filter-btn:hover {
-		background: #3d3d3f;
-	}
-
-	.wbl-filter-btn.active {
-		background: #ffffff;
-		color: #000000;
-	}
-
-	@media (max-width: 768px) {
-		.wbl-card {
-			background: #000000;
-			border-bottom-color: #2d2d2f;
-		}
-
-		.wbl-card:hover {
-			background: #1d1d1f;
-		}
-	}
-}
-
 /* Print Styles */
 @media print {
 	.wbl-filter,
